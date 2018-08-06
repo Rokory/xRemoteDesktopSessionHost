@@ -1,6 +1,6 @@
 
 [ClassVersion("1.0.0.0"), FriendlyName("xRDSessionDeployment")]
-class EO_xRDSessionDeployment : OMI_BaseResource
+class MSFT_xRDSessionDeployment : OMI_BaseResource
 {
     [write, Description("Specifies the FQDN of a server to host the RD Session Host role service. ")] string SessionHost[];
     [key, Description("Specifies the FQDN of a server to host the RD Connection Broker role service.")] string ConnectionBroker;
