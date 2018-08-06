@@ -27,7 +27,7 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 
 ### xRDSessionDeployment
 
-* **SessionHosts**: Specifies the FQDNs of servers to host the RD Session Host role service.
+* **SessionHost**: Specifies the FQDNs of servers to host the RD Session Host role service.
 * **ConnectionBroker**: The FQDN of a server to host the RD Connection Broker role service.
 * **WebAccessServer**: The FQDN of a server to host the RD Web Access role service.
 
