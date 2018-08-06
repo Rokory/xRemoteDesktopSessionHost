@@ -106,6 +106,12 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 * **LicenseServers**: An array of servers to use for RD licensing
 * **LicenseMode**: The RD licensing mode to use. PerUser, PerDevice, or NotConfigured.
 
+### xRDConnectionBrokerHighAvailability
+
+* **ClientAccessname**: Specifies a Domain Name System (DNS) name for clients to use to connect to a Remote Desktop deployment. This is the DNS round robin name that contains fully qualified domain names (FQDNs) of the RD Connection Broker servers.
+* **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
+* **DatabaseConnectionString**: Specifies a connection string for the database that stores the high availability settings.
+
 ## Versions
 
 ### Unreleased

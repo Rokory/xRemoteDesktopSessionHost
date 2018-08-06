@@ -1,0 +1,7 @@
+[ClassVersion("0.1.0"), FriendlyName("xRDConnectionBrokerHighAvailability")]
+class EO_xRDConnectionBrokerHighAvailability : OMI_BaseResource
+{
+    [Key]      string ClientAccessName;
+    [Required] string ConnectionBroker;
+    [Required] string DatabaseConnectionString;
+};
