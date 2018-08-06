@@ -93,8 +93,7 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 ### xRDGatewayConfiguration
 
 * **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
-* **GatewayServer**: The server to configure as an RD Gateway.
-* **ExternalFqdn**: The external FQDN for the RD Gateway server. Only needed for the RDS-Gateway feature.
+* **GatewayExternalFqdn**: The external FQDN for the RD Gateway server. Only needed for the RDS-Gateway feature.
 * **GatewayMode**: Set to DoNotUse, Automatic, or Custom
 * **LogonMethod**: When GatewayMode is custom, sets the logon method for the Gateway.
 * **UseCachedCredentials** When GatewayMode is custom, configures the use of cached credentials.
@@ -103,8 +102,8 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 ### xRDLicenseConfiguration
 
 * **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
-* **LicenseServers**: An array of servers to use for RD licensing
-* **LicenseMode**: The RD licensing mode to use. PerUser, PerDevice, or NotConfigured.
+* **LicenseServer**: An array of servers to use for RD licensing
+* **Mode**: The RD licensing mode to use. PerUser, PerDevice, or NotConfigured.
 
 ### xRDConnectionBrokerHighAvailability
 
