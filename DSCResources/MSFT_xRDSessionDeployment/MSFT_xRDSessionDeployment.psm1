@@ -1,6 +1,10 @@
 Import-Module -Name "$PSScriptRoot\..\..\xRemoteDesktopSessionHostCommon.psm1"
 if (!(Test-xRemoteDesktopSessionHostOsRequirement)) { Throw "The minimum OS requirement was not met."}
-Import-Module RemoteDesktop
+
+# The switch -Global is required, because otherwise
+# the module is not available in called module scripts.
+
+Import-Module RemoteDesktop -Global
 
 #######################################################################
 # The Get-TargetResource cmdlet.
@@ -12,7 +16,7 @@ function Get-TargetResource
     param
     (
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter(Mandatory = $true)]
         [string] $ConnectionBroker,
         [Parameter(Mandatory = $true)]
@@ -56,7 +60,7 @@ function Set-TargetResource
     param
     (
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter(Mandatory = $true)]
         [string] $ConnectionBroker,
         [Parameter(Mandatory = $true)]
@@ -65,7 +69,7 @@ function Set-TargetResource
 
     Write-Verbose "Initiating new RDSH deployment."
     New-RDSessionDeployment @PSBoundParameters
-    $global:DSCMachineStatus = 1
+    # $global:DSCMachineStatus = 1
 }
 
 
@@ -74,12 +78,12 @@ function Set-TargetResource
 #######################################################################
 function Test-TargetResource
 {
-    [CmdletBinding()]
-    [OutputType([System.Boolean])]
-    param
+      [CmdletBinding()]
+      [OutputType([System.Boolean])]
+      param
     (
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter(Mandatory = $true)]
         [string] $ConnectionBroker,
         [Parameter(Mandatory = $true)]
