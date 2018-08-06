@@ -1,0 +1,11 @@
+[ClassVersion("1.1.0.1"), FriendlyName("xRDCertificate")]
+class EO_xRDCertificate : OMI_BaseResource
+{
+    [key, 
+    ValueMap{"RDGateway","RDWebAccess","RDRedirector","RDPublishing"}, 
+    Values{  "RDGateway","RDWebAccess","RDRedirector","RDPublishing"}] string Role;
+
+    [required] string ImportPath;
+    [required, EmbeddedInstance("MSFT_Credential")] string Password;
+    [write] string ConnectionBroker;
+};

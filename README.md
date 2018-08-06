@@ -111,6 +111,13 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 * **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
 * **DatabaseConnectionString**: Specifies a connection string for the database that stores the high availability settings.
 
+### xRDCertificate
+
+* **Role**: The role, the certificate should be configured for. Set to RDGateay, RDWebAccess, RDRedirector, or RDPublishing
+* **ImportPath**: Path of the pfx file with the certificate to import
+* **Password**: A PSCredential object containing the password for the pfx file. Only the password property of the object is used. The username property is not used.
+* **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
+
 ## Versions
 
 ### Unreleased
