@@ -34,7 +34,7 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 ### xRDSessionCollection
 
 * **CollectionName**: Specifies a name for the session collection
-* **SessionHost**: Specifies a RD Session Host server to include in the session collection.
+* **SessionHost**: Specifies the FQDNS of the RD Session Host server to include in the session collection.
 * **CollectionDescription**: A description for the collection.
 * **ConnectionBroker**: The Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
 

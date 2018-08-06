@@ -1,6 +1,11 @@
 Import-Module -Name "$PSScriptRoot\..\..\xRemoteDesktopSessionHostCommon.psm1"
 if (!(Test-xRemoteDesktopSessionHostOsRequirement)) { Throw "The minimum OS requirement was not met."}
-Import-Module RemoteDesktop
+
+# The switch -Global is required, because otherwise
+# the module is not available in called module scripts.
+
+Import-Module RemoteDesktop -Global
+
 $localhost = [System.Net.Dns]::GetHostByName((hostname)).HostName
 
 #######################################################################
@@ -16,20 +21,33 @@ function Get-TargetResource
         [ValidateLength(1,15)]
         [string] $CollectionName,
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
         [string] $ConnectionBroker
     )
     Write-Verbose "Getting information about RDSH collection."
-    $Collection = Get-RDSessionCollection -CollectionName $CollectionName -ConnectionBroker $ConnectionBroker -ErrorAction SilentlyContinue
-    @{
-        "CollectionName" = $Collection.CollectionName 
-        "CollectionDescription" = $Collection.CollectionDescription
-        "SessionHost" = $localhost
-        "ConnectionBroker" = $ConnectionBroker
+    $collection = Get-RDSessionCollection `
+        -CollectionName $CollectionName `
+        -ErrorAction SilentlyContinue
+    
+    if ($collection -ne $null) {
+        $sessionHosts = (
+            Get-RDSessionHost `
+                -ConnectionBroker $ConnectionBroker `
+                -CollectionName $CollectionName `
+                -ErrorAction SilentlyContinue
+        ).SessionHost
+        $result = @{
+            "CollectionName" = $collection.CollectionName;
+            "CollectionDescription" = $collection.CollectionDescription
+            "SessionHosts" = $sessionHosts
+            "ConnectionBroker" = $ConnectionBroker
+        }
     }
+
+    return $result
 }
 
 
@@ -46,21 +64,54 @@ function Set-TargetResource
         [ValidateLength(1,15)]
         [string] $CollectionName,
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
         [string] $ConnectionBroker
     )
-    Write-Verbose "Creating a new RDSH collection."
-    if ($localhost -eq $ConnectionBroker) 
-    {
+
+    if ([string]::IsNullOrWhiteSpace($ConnectionBroker)) {
+        $ConnectionBroker = $localhost
+    }
+
+    Write-Verbose "Checking for existence of RDSH collection."
+    $config = Get-TargetResource @PSBoundParameters
+
+    if ($config -eq $null -or $config.CollectionName -eq $null) {
+        Write-Verbose "Creating new RDSH collection."
         New-RDSessionCollection @PSBoundParameters
     }
-    else 
+    else {
+        Write-Verbose "Checking for session hosts to be added"
+        foreach ($item in $SessionHost) {
+            if ($config.SessionHosts -notcontains $item) {
+                Write-Verbose "Adding $item as session host to session collection $CollectionName"
+                Add-RDSessionHost `
+                    -CollectionName $CollectionName `
+                    -SessionHost $item `
+                    -ConnectionBroker $ConnectionBroker
+            }
+        }
+    }
+
+    Write-Verbose "Checking for session hosts to be removed"
+    foreach ($item in $config.SessionHosts) {
+        if ($SessionHost -notcontains $item) {
+            Write-Verbose "Removing $item as session host from session collection $CollectionName"
+            Remove-RDsessionHost `
+                -CollectionName $CollectionName `
+                -SessionHost $item `
+                -ConnectionBroker $ConnectionBroker
+        }
+    }
+
+    if ($config.CollectionDescription -ne $CollectionDescription)
     {
-        $PSBoundParameters.Remove('CollectionDescription')
-        Add-RDSessionHost @PSBoundParameters
+        Set-RDSessionCollectionConfiguration `
+            -ConnectionBroker $ConnectionBroker `
+            -CollectionName $CollectionName `
+            -CollectionDescription $CollectionDescription
     }
 }
 
@@ -78,15 +129,28 @@ function Test-TargetResource
         [ValidateLength(1,15)]
         [string] $CollectionName,
         [Parameter(Mandatory = $true)]
-        [string] $SessionHost,
+        [string[]] $SessionHost,
         [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
         [string] $ConnectionBroker
     )
+
+    $result = $false
     Write-Verbose "Checking for existence of RDSH collection."
-    $null -ne (Get-TargetResource @PSBoundParameters).CollectionName
+    $config = Get-TargetResource @PSBoundParameters
+    if ($config -and $config.CollectionName) {
+        $result = $config.$CollectionDescription -eq $CollectionDescription
+        foreach ($item in $SessionHost) {
+            $result = $result -and ($config.SessionHost -contains $item)
+        }
+        foreach ($item in $config.SessionHost) {
+            $result = $result -and ($SessionHost -contains $item)
+        }
+    }
+    return $result
 }
 
 
 Export-ModuleMember -Function *-TargetResource
+
