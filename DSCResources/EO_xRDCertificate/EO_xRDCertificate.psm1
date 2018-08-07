@@ -156,7 +156,8 @@ function Test-TargetResource
 
     write-verbose "Thumbprint of certificate for role $($Role):  $($target.Thumbprint)"
 
-    $result = $target.Thumbprint -eq $thumbprint 
+    $result = ($target.Thumbprint -eq $thumbprint) `
+        -and ($target.Level -ne 'NotConfigured')
     
     write-verbose "Test-TargetResource returning:  $result"
     return $result
