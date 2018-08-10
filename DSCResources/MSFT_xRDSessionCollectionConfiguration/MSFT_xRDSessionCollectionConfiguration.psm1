@@ -30,8 +30,6 @@ function Get-TargetResource
         [Parameter()]
         [boolean] $ClientPrinterRedirected,
         [Parameter()]
-        [boolean] $TemporaryFoldersPerSession,
-        [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
         [string] $ConnectionBroker,
@@ -142,8 +140,6 @@ function Set-TargetResource
         [boolean] $ClientPrinterAsDefault,
         [Parameter()]
         [boolean] $ClientPrinterRedirected,
-        [Parameter()]
-        [boolean] $TemporaryFoldersPerSession,
         [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
@@ -307,8 +303,6 @@ function Test-TargetResource
         [boolean] $ClientPrinterAsDefault,
         [Parameter()]
         [boolean] $ClientPrinterRedirected,
-        [Parameter()]
-        [boolean] $TemporaryFoldersPerSession,
         [Parameter()]
         [string] $CollectionDescription,
         [Parameter()]
