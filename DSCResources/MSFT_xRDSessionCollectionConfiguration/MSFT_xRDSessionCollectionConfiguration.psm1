@@ -374,6 +374,8 @@ function Test-TargetResource
         $null = $PSBoundParameters.Remove('MaxUserProfileDiskSizeGB')
     }
 
+    $null = $PSBoundParameters.Remove('UserGroup')
+
     $get = Get-TargetResource -CollectionName $CollectionName
 
     foreach($name in $PSBoundParameters.Keys) 
@@ -386,6 +388,20 @@ function Test-TargetResource
         else 
         {
             Write-Verbose "Property: $name - InDesiredState: True"
+        }
+    }
+
+    foreach ($item in $UserGroup) {
+        if ($get.UserGroup -notcontains $item) {
+            Write-Verbose ("User group $item is not in session collection")
+            $isInDesiredState = $false
+        }
+    }
+
+    foreach ($item in $get.UserGroup) {
+        if ($UserGroup -notcontains $item) {
+            Write-Verbose("User group $item is in session collection, but should not")
+            $isInDesiredState = $false
         }
     }
 
