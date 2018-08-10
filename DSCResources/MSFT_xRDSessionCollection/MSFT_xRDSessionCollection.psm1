@@ -42,7 +42,7 @@ function Get-TargetResource
         $result = @{
             "CollectionName" = $collection.CollectionName;
             "CollectionDescription" = $collection.CollectionDescription
-            "SessionHosts" = $sessionHosts
+            "SessionHost" = $sessionHosts
             "ConnectionBroker" = $ConnectionBroker
         }
     }
@@ -85,7 +85,7 @@ function Set-TargetResource
     else {
         Write-Verbose "Checking for session hosts to be added"
         foreach ($item in $SessionHost) {
-            if ($config.SessionHosts -notcontains $item) {
+            if ($config.SessionHost -notcontains $item) {
                 Write-Verbose "Adding $item as session host to session collection $CollectionName"
                 Add-RDSessionHost `
                     -CollectionName $CollectionName `
@@ -140,7 +140,7 @@ function Test-TargetResource
     Write-Verbose "Checking for existence of RDSH collection."
     $config = Get-TargetResource @PSBoundParameters
     if ($config -and $config.CollectionName) {
-        $result = $config.$CollectionDescription -eq $CollectionDescription
+        $result = $config.CollectionDescription -eq $CollectionDescription
         foreach ($item in $SessionHost) {
             $result = $result -and ($config.SessionHost -contains $item)
         }
