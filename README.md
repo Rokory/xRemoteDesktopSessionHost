@@ -48,6 +48,7 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 * **ClientDeviceRedirectionOptions**: Specifies a type of client device to be redirected to an RD Session Host server in this session collection.
 * **ClientPrinterAsDefault**: Indicates whether to use the client printer or server printer as the default printer.  If this value is $True, use the client printer as default.  If this value is $False, use the server as default.
 * **ClientPrinterRedirected**: Indicates whether to use client printer redirection, which routes print jobs from the Remote Desktop session to a printer attached to the client computer.
+* **TemporaryFoldersPerSession**: Specifies whether to use a single folder for temporary files. If this value is $True, a single folder contains temporary files. If this value is $False, individual users have separate folders to store temporary files.
 * **CollectionDescription**: Specifies a description of the session collection.
 * **ConnectionBroker**: Specifies the Remote Desktop Connection Broker (RD Connection Broker) server for a Remote Desktop deployment.
 * **CustomRdpProperty**: Specifies Remote Desktop Protocol (RDP) settings to include in the .rdp files for all Windows Server 2012 RemoteApp programs and remote desktops published in this collection.
@@ -122,6 +123,7 @@ branch, and be released to [PowerShell Gallery](https://www.powershellgallery.co
 
 ### Unreleased
 
+* Added property TemporaryFoldersPerSession to xRDSessionCollectionConfiguration
 * Added resource xRDConnectionBrokerhighAvailability
 * Added resource xRDCertificate
 * Changes in xRDGatewayConfiguration
