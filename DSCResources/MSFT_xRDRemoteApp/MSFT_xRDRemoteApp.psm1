@@ -192,6 +192,10 @@ function Test-TargetResource
 
     Write-Verbose "Testing if RemoteApp is published."
 
+    $null = $PSBoundParameters.Remove('Verbose')
+    $null = $PSBoundParameters.Remove('Debug')
+    $null = $PSBoundParameters.Remove('ConnectionBroker')
+
     try 
     {
         $null = Get-RDSessionCollection -CollectionName $CollectionName -ErrorAction Stop
